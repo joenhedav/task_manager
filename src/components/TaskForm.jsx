@@ -21,7 +21,7 @@ const TaskForm = ({ tasks, setTasks }) => {
   const addTask = (event) => {
     event.preventDefault()
     const task = {
-      id: tasks.length + 1,
+      id: Date.now(),
       ...newTask
     }
     setTasks(tasks.concat(task))

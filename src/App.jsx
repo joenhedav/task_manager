@@ -13,6 +13,15 @@ const App = () => {
     )
   }
 
+  /* finalizar una tarea */
+  const finishTask = (id) => {
+    setTasks(
+      tasks.map(task => 
+        task.id === id ? {...task, status: 'Completada'} : task
+      )
+    )
+  }
+
   return (
     <div className="min-h-screen w-full bg-base text-lavander p-8">
       <div className="mb-8 flex items-center justify-between">
@@ -56,6 +65,7 @@ const App = () => {
           <TaskList
             tasks={tasks} 
             deleteTask={deleteTask}
+            finishTask={finishTask}
           />
         </div>
       </div>

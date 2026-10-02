@@ -1,6 +1,6 @@
 import TaskCard from "./TaskCard"
 
-const TaskList = ({tasks, deleteTask}) => {
+const TaskList = ({tasks, deleteTask, finishTask}) => {
     return (
         <>
           {tasks.length === 0 ?
@@ -24,6 +24,7 @@ const TaskList = ({tasks, deleteTask}) => {
                   closingDate={task.closingDate}
                   sprint={task.sprint}
                   deleteTask={deleteTask}
+                  finishTask={finishTask}
                 />
               )}
             </div>

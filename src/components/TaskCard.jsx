@@ -1,5 +1,4 @@
-import { IoTrashOutline } from "react-icons/io5";
-import { TfiPencil } from "react-icons/tfi";
+import { IoTrashOutline } from "react-icons/io5"
 import { MdDone } from "react-icons/md";
 
 const priorityStyles = {
@@ -24,25 +23,27 @@ const statusStyles = {
 }
 
 const TaskCard = ({
-id,
-name,
-activityType,
-status,
-summary,
-priority,
-reporter,
-assignee,
-creationDate,
-closingDate,
-sprint,
-deleteTask
+  id,
+  name,
+  activityType,
+  status,
+  summary,
+  priority,
+  reporter,
+  assignee,
+  creationDate,
+  closingDate,
+  sprint,
+  deleteTask,
+  finishTask,
 }) => {
 
-  const priorityStyle =
-    priorityStyles[priority] || {
-      border: 'border-subtext',
-      text: 'text-subtext'
-    }
+  const priorityStyle = priority
+    ? priorityStyles[priority]
+    : {
+        border: 'border-subtext',
+        text: 'text-subtext'
+      }
 
   const statusStyle =
     statusStyles[status] || 'bg-base text-subtext'
@@ -52,12 +53,17 @@ deleteTask
       className={`bg-mantle w-full p-4 border-l-4 ${priorityStyle.border} min-w-0`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
-        <h3
-          className="text-sm font-bold text-lavander line-clamp-1 min-w-0"
-          title={name}
-        >
-          {name}
-        </h3>
+        <div className="min-w-0">
+          <span className="text-xs text-surface">
+            #{id}
+          </span>
+          <h3
+            className="text-sm font-bold text-lavander line-clamp-1"
+            title={name}
+          >
+            {name || 'Tarea sin nombre'}
+          </h3>
+        </div>
         <span
           className={`shrink-0 text-xs font-semibold px-2 py-1 ${statusStyle}`}
         >
@@ -81,7 +87,6 @@ deleteTask
         <p className="text-xs text-lavander font-semibold mb-1">
           Resumen
         </p>
-
         <p
           className="text-xs text-lavander line-clamp-3"
           title={summary}
@@ -94,7 +99,6 @@ deleteTask
           <p className="text-xs text-lavander font-semibold">
             Informador
           </p>
-
           <p
             className="text-xs text-lavander truncate"
             title={reporter}
@@ -119,7 +123,6 @@ deleteTask
           <p className="text-xs text-lavander font-semibold">
             Fecha de creación
           </p>
-
           <p className="text-xs text-lavander truncate">
             {creationDate || '-'}
           </p>
@@ -133,22 +136,15 @@ deleteTask
           </p>
         </div>
       </div>
-      {/*eliminar editar finalizar */}
       <div className="border-t border-base pt-2 flex w-full justify-end gap-2">
-        <button 
+        <button
           onClick={() => deleteTask(id)}
           className="cursor-pointer"
         >
           <IoTrashOutline />
         </button>
-        <button 
-          onClick={() => deleteTask(id)}
-          className="cursor-pointer"
-        >
-          <TfiPencil />
-        </button>
-        <button 
-          onClick={() => deleteTask(id)}
+        <button
+          onClick={() => finishTask(id)}
           className="cursor-pointer"
         >
           <MdDone />
