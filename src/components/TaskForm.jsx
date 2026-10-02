@@ -288,7 +288,7 @@ const TaskForm = ({ tasks, setTasks, taskToEdit, setTaskToEdit }) => {
           type="submit"
           className="w-full bg-green px-4 py-3 font-medium text-mantle cursor-pointer"
         >
-          Agregar tarea
+          {taskToEdit ? 'Editar tarea' : 'Agregar nueva tarea'}
         </button>
       </form>
     </div>
