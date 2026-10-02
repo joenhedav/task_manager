@@ -15,18 +15,29 @@ const initialTask = {
   sprint: ''
 }
 
-const TaskForm = ({ tasks, setTasks }) => {
-  const [newTask, setNewTask] = useState(initialTask)
+const TaskForm = ({ tasks, setTasks, taskToEdit, setTaskToEdit }) => {
+  const [newTask, setNewTask] = useState(taskToEdit || initialTask)
 
   const addTask = (event) => {
-    event.preventDefault()
-    const task = {
-      id: Date.now(),
-      ...newTask
-    }
-    setTasks(tasks.concat(task))
+  event.preventDefault()
+  // editar tarea
+  if (taskToEdit) {
+    setTasks(
+      tasks.map(task =>
+        task.id === taskToEdit.id ? {...newTask, id: taskToEdit.id} : task
+      ))
+    setTaskToEdit(null)
     setNewTask(initialTask)
+    return
   }
+  // crear nueva tarea
+  const task = {
+    id: tasks.length + 1,
+    ...newTask
+  }
+  setTasks(tasks.concat(task))
+  setNewTask(initialTask)
+}
 
   const handleNewTask = (event) => {
     setNewTask({
@@ -38,7 +49,8 @@ const TaskForm = ({ tasks, setTasks }) => {
   return (
     <div className="w-full max-w-lg mx-auto bg-mantle shadow-lg p-6">
       <h2 className="text-2xl font-bold text-lavander mb-2 text-center">
-        Agregar una nueva tarea
+        {taskToEdit ?
+          'Editar tarea' : 'Agregar nueva tarea'}
       </h2>
       <p className="text-sm text-lavander mb-8 text-center">
         Completa los datos para crear una nueva tarea

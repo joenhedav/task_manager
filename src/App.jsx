@@ -6,6 +6,7 @@ import { IoIosAddCircleOutline, IoIosCloseCircleOutline} from "react-icons/io"
 const App = () => {
   const [tasks, setTasks] = useState([])
   const [showForm, setShowForm] = useState(false)
+  const [taskToEdit, setTaskToEdit] = useState(null)
 
   /* borrar una tarea */
   const deleteTask = (id) => {
@@ -22,6 +23,14 @@ const App = () => {
     )
   }
 
+  /* editar una tarea */
+  const editTask = (id) => {
+    const task = tasks.find(task => task.id === id)
+
+    setTaskToEdit(task)
+    setShowForm(true)
+  }
+
   return (
     <div className="min-h-screen w-full bg-base text-lavander p-8">
       <div className="mb-8 flex items-center justify-between">
@@ -29,7 +38,10 @@ const App = () => {
           Gestor de tareas
         </h1>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            setShowForm(!showForm)
+            setTaskToEdit(null)
+          }}
         >
           {showForm ? (
             <IoIosCloseCircleOutline
@@ -50,8 +62,11 @@ const App = () => {
         {showForm && (
           <div className="lg:col-span-1">
             <TaskForm
+              key={taskToEdit?.id || "new"}
               tasks={tasks}
               setTasks={setTasks}
+              taskToEdit={taskToEdit}
+              setTaskToEdit={setTaskToEdit}
             />
           </div>
         )}
@@ -66,6 +81,7 @@ const App = () => {
             tasks={tasks} 
             deleteTask={deleteTask}
             finishTask={finishTask}
+            editTask={editTask}
           />
         </div>
       </div>

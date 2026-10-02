@@ -1,5 +1,6 @@
 import { IoTrashOutline } from "react-icons/io5"
 import { MdDone } from "react-icons/md";
+import { TfiPencil } from "react-icons/tfi";
 
 const priorityStyles = {
   Baja: {
@@ -36,6 +37,7 @@ const TaskCard = ({
   sprint,
   deleteTask,
   finishTask,
+  editTask
 }) => {
 
   const priorityStyle = priority
@@ -148,6 +150,12 @@ const TaskCard = ({
           className="cursor-pointer"
         >
           <MdDone />
+        </button>
+        <button
+          onClick={() => editTask(id)}
+          className="cursor-pointer"
+        >
+          <TfiPencil />
         </button>
       </div>
     </div>

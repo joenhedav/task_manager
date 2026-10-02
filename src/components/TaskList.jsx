@@ -1,6 +1,6 @@
 import TaskCard from "./TaskCard"
 
-const TaskList = ({tasks, deleteTask, finishTask}) => {
+const TaskList = ({tasks, deleteTask, finishTask, editTask}) => {
     return (
         <>
           {tasks.length === 0 ?
@@ -25,6 +25,7 @@ const TaskList = ({tasks, deleteTask, finishTask}) => {
                   sprint={task.sprint}
                   deleteTask={deleteTask}
                   finishTask={finishTask}
+                  editTask={editTask}
                 />
               )}
             </div>
