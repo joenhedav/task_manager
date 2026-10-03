@@ -1,32 +1,62 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TaskList from './components/TaskList'
 import TaskForm from './components/TaskForm'
 import { IoIosAddCircleOutline, IoIosCloseCircleOutline} from "react-icons/io"
 
 const App = () => {
   const [tasks, setTasks] = useState([])
+
+  useEffect(() => {
+  fetch('http://localhost:3001/api/tasks')
+    .then(response => response.json())
+    .then(data => {
+      setTasks(data)
+    })
+  }, [])
+
   const [showForm, setShowForm] = useState(false)
   const [taskToEdit, setTaskToEdit] = useState(null)
 
   /* borrar una tarea */
-  const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id)
-    )
+  const deleteTask = async (id) => {
+    try {
+      await fetch(`http://localhost:3001/api/tasks/${id}`, {
+        method: 'DELETE'
+      })
+      setTasks(tasks.filter(task => task.id !== id))
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   /* finalizar una tarea */
-  const finishTask = (id) => {
-    setTasks(
-      tasks.map(task => 
-        task.id === id ? {...task, status: 'Completada'} : task
+  const finishTask = async (id) => {
+    try {
+      const taskToFinish = tasks.find(task => task.id === id)
+      const response = await fetch(`http://localhost:3001/api/tasks/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...taskToFinish,
+          status: 'Completada'
+        })
+      })
+      const updatedTask = await response.json()
+      setTasks(
+        tasks.map(task =>
+          task.id === id ? updatedTask : task
+        )
       )
-    )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   /* editar una tarea */
   const editTask = (id) => {
     const task = tasks.find(task => task.id === id)
-
     setTaskToEdit(task)
     setShowForm(true)
   }

@@ -18,25 +18,55 @@ const initialTask = {
 const TaskForm = ({ tasks, setTasks, taskToEdit, setTaskToEdit }) => {
   const [newTask, setNewTask] = useState(taskToEdit || initialTask)
 
-  const addTask = (event) => {
+  const addTask = async (event) => {
   event.preventDefault()
   // editar tarea
   if (taskToEdit) {
+  try {
+    const response = await fetch(
+      `http://localhost:3001/api/tasks/${taskToEdit.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newTask)
+      }
+    )
+    const updatedTask = await response.json()
+
     setTasks(
       tasks.map(task =>
-        task.id === taskToEdit.id ? {...newTask, id: taskToEdit.id} : task
-      ))
+        task.id === taskToEdit.id
+          ? updatedTask
+          : task
+      )
+    )
     setTaskToEdit(null)
     setNewTask(initialTask)
-    return
+
+  } catch (error) {
+    console.error(error)
   }
+  return
+}
+
   // crear nueva tarea
-  const task = {
-    id: tasks.length + 1,
-    ...newTask
+   try {
+    const response = await fetch('http://localhost:3001/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newTask)
+    })
+    const task = await response.json()
+    setTasks(tasks.concat(task))
+    setNewTask(initialTask)
+
+  } catch (error) {
+    console.error(error)
   }
-  setTasks(tasks.concat(task))
-  setNewTask(initialTask)
 }
 
   const handleNewTask = (event) => {
